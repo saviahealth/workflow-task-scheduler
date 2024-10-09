@@ -9,11 +9,10 @@ import org.intermountain.abd.workflow.common.WorkflowTaskExecutionContextDescrip
 import org.intermountain.abd.workflow.domain.events.WorkflowEventType
 import org.intermountain.abd.workflow.domain.events.WorkflowTaskExecutionScheduled
 import org.intermountain.abd.workflow.domain.events.WorkflowTaskScheduleTriggerFired
+import org.intermountain.abd.workflow.domain.model.WorkflowTaskDefinition
 import org.intermountain.abd.workflow.domain.model.WorkflowTaskExecutionDescriptor
-import org.intermountain.abd.workflow.domain.model.schedule.WorkflowTaskDefinition
 import org.intermountain.abd.workflow.domain.model.schedule.WorkflowTaskSchedule
 import org.intermountain.abd.workflow.support.identity.EntityIdentifier
-import org.intermountain.abd.workflow.support.provenance.ProvenanceEntry
 import org.quartz.JobKey
 import org.quartz.Scheduler
 import org.slf4j.Logger

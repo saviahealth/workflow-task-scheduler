@@ -13,17 +13,11 @@
 	<version>${revision}</version>
 	<name>workflow-task-scheduler</name>
 	<description>ABD task scheduling service</description>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<revision>1.0${changelist}</revision>
 		<changelist>-SNAPSHOT</changelist>
 		<java.version>17</java.version>
-		<workflow-api.version>3.6.0-SNAPSHOT</workflow-api.version>
+		<workflow-api.version>3.7.0-SNAPSHOT</workflow-api.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
