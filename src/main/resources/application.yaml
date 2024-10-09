@@ -1,0 +1,78 @@
+info:
+  app:
+    name: "Spring Sample Application"
+    description: "This is my first spring boot application"
+    version: "1.0.0"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+    java:
+      enabled: true
+
+server:
+  shutdown: graceful
+
+spring:
+  application:
+    name: workflow-task-scheduler
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      schema: classpath:/tables_postgres.sql
+    properties:
+      org:
+        quartz:
+          jobStore:
+            tablePrefix: scheduler.qrtz_
+            isClustered: true
+            clusterCheckinInterval: 20000
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+  datasource:
+    username: postgres
+    password: postgrespassword
+    url: jdbc:postgresql://localhost:32345/postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  pulsar:
+    client:
+      authentication:
+        plugin-class-name: org.apache.pulsar.client.impl.auth.AuthenticationToken
+        param:
+          token: ${PULSAR_CLIENT_TOKEN:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwdWxzYXItY2xpZW50In0.xB4pN_oFcN3hA_MalEg4zq0c55Lg0wOXYkTd2xOia_plGNAY-KqhszOOERPrPK_0bBOkHBE66QxA5kAfdbxKGYto8gS2z0Zmn7lu7tcGMhdaZK4LcIw-CcORlDwv7wi9ou4Ik5Wpr4nlZc-tlL48mjwbrfKbynSMBSZdJrEM_R3-8YkPha08fcWXY_S-OAoWF13dDVGwy6JZRDOcCnJMx9PKyEisnHt9rMHYdlLL55YZu969rw_WUcxEyS61AeMmi5UF5neVfUxgmtUiTeaaW-90PSNFAmCKQ4swTPpRbaHkerMzxuBAfNOtGs8H6YuFciyPyfxfgI7NapjzLYTXzA}
+      service-url: ${PULSAR_SERVICE_URL:pulsar://localhost:6650}
+
+messaging:
+  enabled: true
+  tenant: clinical-apps
+  namespace: savia
+  consumer-suffix: workflow-task-scheduler
+  consumerId: ${messaging.tenant}/${messaging.namespace}/${messaging.consumer-suffix}
+  dead-letter-consumer-id: ${messaging.consumer-id}-DLT
+  dead-letter-topic-name: ${messaging.scheduler-topic-name}-DLT
+  scheduler-topic-name-suffix: workflow-task-execution-scheduled
+  workflow-task-schedule-trigger-fired-topic-suffix: workflow-task-schedule-trigger-fired
+  workflow-task-schedule-trigger-fired-topic-name: ${messaging.tenant}/${messaging.namespace}/${messaging.workflow-task-schedule-trigger-fired-topic-suffix}
+  scheduler-topic-name: ${messaging.tenant}/${messaging.namespace}/${messaging.scheduler-topic-name-suffix}
+  consumer-ack-timeout-mills: 600000
+  consumer-receiver-queue-size: 100
+  retries: 100
+  consumer-nack-redelivery-min-timeout-ms: 100
+  consumer-nack-redelivery-max-timeout-ms: 60000
+  consumer-nack-redelivery-multiplier: 1.2
